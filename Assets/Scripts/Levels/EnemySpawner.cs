@@ -12,11 +12,23 @@ public class EnemySpawner : MonoBehaviour
     public Image level_selector;
     public GameObject button;
     public GameObject enemy;
-    public SpawnPoint[] SpawnPoints;    
+    public SpawnPoint[] SpawnPoints;
+
+    private List<Enemy> enemies;
+    public List<Level> levels;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // load enemy data from json
+        string json = File.ReadAllText(Application.dataPath + "/Resources/enemies.json");
+        enemies = JsonConvert.DeserializeObject<List<Enemy>>(json);
+
+        string level_son=File.ReadAllText(Application.dataPath + "/Resources/levels.json");
+        levels=JsonConvert.DeserializeObject<List<Level>>(json);
+
+
+
         GameObject selector = Instantiate(button, level_selector.transform);
         selector.transform.localPosition = new Vector3(0, 130);
         selector.GetComponent<MenuSelectorController>().spawner = this;
@@ -26,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void StartLevel(string levelname)
@@ -55,6 +67,7 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.state = GameManager.GameState.INWAVE;
         for (int i = 0; i < 10; ++i)
         {
+            //new wave spawn logic should go here, for now we just spawn 10 zombies
             yield return SpawnZombie();
         }
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
@@ -65,7 +78,7 @@ public class EnemySpawner : MonoBehaviour
     {
         SpawnPoint spawn_point = SpawnPoints[Random.Range(0, SpawnPoints.Length)];
         Vector2 offset = Random.insideUnitCircle * 1.8f;
-                
+
         Vector3 initial_position = spawn_point.transform.position + new Vector3(offset.x, offset.y, 0);
         GameObject new_enemy = Instantiate(enemy, initial_position, Quaternion.identity);
 
@@ -76,4 +89,31 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.AddEnemy(new_enemy);
         yield return new WaitForSeconds(0.5f);
     }
+}
+public class Enemy
+{
+    public string name;
+    public int sprite;
+    public int hp;
+    public int speed;
+    public int damage;
+}
+
+public class Level
+{
+    public string name;
+    public int waves;
+
+    public List<Spawn> spawns;
+}
+
+public class Spawn
+{
+    public string enemy;
+    public string count;
+    public string hp;
+    public string damage;
+    public string delay;
+    public int[] sequence;
+    public string location;
 }
