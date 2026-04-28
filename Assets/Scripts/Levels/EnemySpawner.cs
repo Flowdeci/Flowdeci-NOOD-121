@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     public SpawnPoint[] SpawnPoints;
 
     private List<Enemy> enemies;
-    public List<Level> levels;
+    private List<Level> levels;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,15 +24,21 @@ public class EnemySpawner : MonoBehaviour
         string json = File.ReadAllText(Application.dataPath + "/Resources/enemies.json");
         enemies = JsonConvert.DeserializeObject<List<Enemy>>(json);
 
-        string level_son=File.ReadAllText(Application.dataPath + "/Resources/levels.json");
-        levels=JsonConvert.DeserializeObject<List<Level>>(json);
+        string level_json = File.ReadAllText(Application.dataPath + "/Resources/levels.json");
+        levels = JsonConvert.DeserializeObject<List<Level>>(level_json);
 
+        for (int i = 0; i < levels.Count; i++)
+        {
+            GameObject selector = Instantiate(button, level_selector.transform);
+            selector.transform.localPosition = new Vector3(0, 130 - i * 60);
+            selector.GetComponent<MenuSelectorController>().spawner = this;
+            selector.GetComponent<MenuSelectorController>().SetLevel(levels[i].name);
+        }
 
-
-        GameObject selector = Instantiate(button, level_selector.transform);
-        selector.transform.localPosition = new Vector3(0, 130);
-        selector.GetComponent<MenuSelectorController>().spawner = this;
-        selector.GetComponent<MenuSelectorController>().SetLevel("Start");
+        // GameObject selector = Instantiate(button, level_selector.transform);
+        // selector.transform.localPosition = new Vector3(0, 130);
+        // selector.GetComponent<MenuSelectorController>().spawner = this;
+        // selector.GetComponent<MenuSelectorController>().SetLevel("Start");
     }
 
     // Update is called once per frame
