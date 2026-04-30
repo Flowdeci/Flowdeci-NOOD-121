@@ -1,0 +1,82 @@
+@startuml
+title Wave Spawning and Game State Architecture
+
+class EnemySpawner {
+  - List<Enemy> enemies
+  - List<Level> levels
+  - Level currentLevel
+  - int currentWave
+  + StartLevel(string levelname)
+  + NextWave()
+  + ReturnToStart()
+  - SpawnWave()
+  - SpawnEnemy(Enemy enemyData)
+}
+
+class GameManager {
+  + GameState state
+  + int countdown
+  + int currentWave
+  + float lastWaveTime
+  + string gameOverMessage
+  + AddEnemy(GameObject enemy)
+  + RemoveEnemy(GameObject enemy)
+  + ResetRun()
+}
+
+class RewardScreenManager {
+  + GameObject rewardUI
+  + TextMeshProUGUI rewardText
+  + TextMeshProUGUI rewardButtonText
+  - Start()
+  - Update()
+}
+
+class PlayerController {
+  + StartLevel()
+  - Die()
+}
+
+class EnemyController {
+  - Update()
+}
+
+class RPNEvaluator {
+  + Evaluate(string expression, Dictionary<string, int> variables)
+  + Evaluatef(string expression, Dictionary<string, float> variables)
+}
+
+class Enemy {
+  + string name
+  + int sprite
+  + int hp
+  + int speed
+  + int damage
+}
+
+class Level {
+  + string name
+  + int waves
+  + List<Spawn> spawns
+}
+
+class Spawn {
+  + string enemy
+  + string count
+  + string hp
+  + string damage
+  + string delay
+  + int[] sequence
+  + string location
+}
+
+EnemySpawner --> GameManager : sets state/wave/time
+EnemySpawner --> RPNEvaluator : evaluates spawn counts
+EnemySpawner --> Enemy : reads enemy stats
+EnemySpawner --> Level : selected level
+Level --> Spawn : contains
+RewardScreenManager --> GameManager : reads state/messages
+PlayerController --> GameManager : sets GAMEOVER on death
+EnemyController --> GameManager : stops during GAMEOVER
+
+@enduml
