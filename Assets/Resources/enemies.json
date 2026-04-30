@@ -19,6 +19,14 @@
        "hp": 30,
        "speed": 7,
        "damage": 10
+   },
+   {
+
+        "name": "imp",
+        "sprite": 39,
+        "hp": 10,
+        "speed": 10,
+        "damage": 3
    }
  
 ]

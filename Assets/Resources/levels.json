@@ -23,6 +23,17 @@
                 "count": "wave 5 / 1 wave 5 % - *",
                 "hp": "100 25 wave * +",
                 "location": "random bone"
+            },
+            {
+                "enemy": "imp",
+                "count": "wave 2 /",
+                "hp": "base 2 wave * +",
+                "speed": "base",
+                "damage": "base",
+                "delay": "3",
+                "sequence": [2,2,1],
+                "location": "random"
+
             }
         ]
    },
@@ -51,6 +62,16 @@
                 "hp": "75 50 wave * +",
                 "damage": "base 10 +",
                 "location": "random bone"
+            },
+            {
+                "enemy": "imp",
+                "count": "wave 3 /",
+                "hp": "base 3 wave * +",
+                "speed": "base 2 wave * +",
+                "damage": "base",
+                "delay": "2",
+                "sequence": [3, 2, 3],
+                "location": "random"
             }
         ]
    },
@@ -78,6 +99,16 @@
                 "hp": "75 15 wave * +",
                 "damage": "base 5 -",
                 "location": "random bone"
+            },
+            {
+                "enemy": "imp",
+                "count": "wave 2 / 2 +",
+                "hp": "base 2 wave * +",
+                "speed": "base 1 wave 3 / +",
+                "damage": "base",
+                "delay": "2",
+                "sequence": [3, 3, 2],
+                "location": "random"
             }
         ]
    }
