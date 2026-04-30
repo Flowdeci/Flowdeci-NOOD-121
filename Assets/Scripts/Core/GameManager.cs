@@ -16,6 +16,9 @@ public class GameManager
     public GameState state;
 
     public int countdown;
+    public int currentWave;
+    public float lastWaveTime;
+    public string gameOverMessage;
     private static GameManager theInstance;
     public static GameManager Instance {  get
         {
@@ -43,6 +46,25 @@ public class GameManager
     public void RemoveEnemy(GameObject enemy)
     {
         enemies.Remove(enemy);
+    }
+
+    public void ResetRun()
+    {
+        state = GameState.PREGAME;
+        countdown = 0;
+        currentWave = 0;
+        lastWaveTime = 0;
+        gameOverMessage = "";
+
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy != null)
+            {
+                UnityEngine.Object.Destroy(enemy);
+            }
+        }
+
+        enemies.Clear();
     }
 
     public GameObject GetClosestEnemy(Vector3 point)

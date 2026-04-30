@@ -64,6 +64,9 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         Debug.Log("You Lost");
+        unit.movement = Vector2.zero;
+        GameManager.Instance.gameOverMessage = "You died!";
+        GameManager.Instance.state = GameManager.GameState.GAMEOVER;
     }
 
 }
