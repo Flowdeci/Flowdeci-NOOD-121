@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class SpellBuilder 
 {
+    private const string ImplementedBaseSpellId = "arcane_bolt";
     private Dictionary<string, SpellData> spells;
     private List<string> baseSpellIds;
     private List<string> modifierSpellIds;
@@ -18,8 +19,13 @@ public class SpellBuilder
             return new Spell(owner);
         }
 
-        string baseSpellId = GetRandomSpellId(baseSpellIds);
+        string baseSpellId = ImplementedBaseSpellId;
         SpellData baseSpellData = GetSpellData(baseSpellId);
+
+        if (baseSpellData == null)
+        {
+            return new Spell(owner);
+        }
 
         string modifierSpellId = null;
         SpellData modifierSpellData = null;

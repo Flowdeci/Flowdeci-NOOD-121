@@ -7,6 +7,7 @@ public class SpellCaster
     public int mana;
     public int max_mana;
     public int mana_reg;
+    public int spell_power;
     public Hittable.Team team;
     public Spell spell;
 
@@ -25,6 +26,7 @@ public class SpellCaster
         this.mana = mana;
         this.max_mana = mana;
         this.mana_reg = mana_reg;
+        this.spell_power = 0;
         this.team = team;
         spell = new SpellBuilder().Build(this);
     }
@@ -34,7 +36,7 @@ public class SpellCaster
         if (mana >= spell.GetManaCost() && spell.IsReady())
         {
             mana -= spell.GetManaCost();
-            yield return spell.Cast(where, target, team);
+            yield return spell.Cast(where, target, team, spell_power);
         }
         yield break;
     }
