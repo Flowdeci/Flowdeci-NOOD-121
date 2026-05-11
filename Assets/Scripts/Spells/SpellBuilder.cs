@@ -12,7 +12,27 @@ public class SpellBuilder
 
     public Spell Build(SpellCaster owner)
     {
-        return new Spell(owner);
+        if (baseSpellIds.Count == 0)
+        {
+            Debug.LogError("No base spells found in spells.json");
+            return new Spell(owner);
+        }
+
+        string baseSpellId = GetRandomSpellId(baseSpellIds);
+        SpellData baseSpellData = GetSpellData(baseSpellId);
+
+        string modifierSpellId = null;
+        SpellData modifierSpellData = null;
+
+        if (modifierSpellIds.Count > 0)
+        {
+            modifierSpellId = GetRandomSpellId(modifierSpellIds);
+            modifierSpellData = GetSpellData(modifierSpellId);
+        }
+
+        Spell spell = new Spell(owner, baseSpellId, baseSpellData, modifierSpellId, modifierSpellData);
+        Debug.Log("Built random spell: " + spell.GetName());
+        return spell;
     }
 
     public SpellData GetSpellData(string spellId)
@@ -34,6 +54,11 @@ public class SpellBuilder
     public List<string> GetModifierSpellIds()
     {
         return modifierSpellIds;
+    }
+
+    private string GetRandomSpellId(List<string> spellIds)
+    {
+        return spellIds[Random.Range(0, spellIds.Count)];
     }
 
     public SpellBuilder()

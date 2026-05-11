@@ -1,26 +1,67 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 
 public class Spell 
 {
     public float last_cast;
     public SpellCaster owner;
     public Hittable.Team team;
+    public string baseSpellId;
+    public string modifierSpellId;
+    public SpellData baseSpellData;
+    public SpellData modifierSpellData;
 
     public Spell(SpellCaster owner)
     {
         this.owner = owner;
     }
 
+    public Spell(SpellCaster owner, string baseSpellId, SpellData baseSpellData, string modifierSpellId, SpellData modifierSpellData)
+    {
+        this.owner = owner;
+        this.baseSpellId = baseSpellId;
+        this.baseSpellData = baseSpellData;
+        this.modifierSpellId = modifierSpellId;
+        this.modifierSpellData = modifierSpellData;
+    }
+
     public string GetName()
     {
-        return "Bolt";
+        if (baseSpellData == null)
+        {
+            return "Bolt";
+        }
+
+        if (modifierSpellData == null)
+        {
+            return baseSpellData.name;
+        }
+
+        return modifierSpellData.name + " " + baseSpellData.name;
+    }
+
+    public string GetDescription()
+    {
+        if (baseSpellData == null)
+        {
+            return "";
+        }
+
+        if (modifierSpellData == null)
+        {
+            return baseSpellData.description;
+        }
+
+        return baseSpellData.description + "\n" + modifierSpellData.description;
     }
 
     public int GetManaCost()
     {
+        if (baseSpellData == null)
+        {
+            return 10;
+        }
+
         return 10;
     }
 
@@ -36,7 +77,12 @@ public class Spell
 
     public virtual int GetIcon()
     {
-        return 0;
+        if (baseSpellData == null)
+        {
+            return 0;
+        }
+
+        return baseSpellData.icon;
     }
 
     public bool IsReady()
