@@ -131,14 +131,15 @@ public class Spell
         string trajectory = GetProjectileTrajectory();
         float speed = GetProjectileSpeed(spellPower);
         float lifetime = GetProjectileLifetime(spellPower);
+        int pierce = GetPierce(spellPower);
 
         if (lifetime > 0)
         {
-            GameManager.Instance.projectileManager.CreateProjectile(sprite, trajectory, where, direction, speed, onHit, lifetime);
+            GameManager.Instance.projectileManager.CreateProjectile(sprite, trajectory, where, direction, speed, onHit, lifetime, pierce);
         }
         else
         {
-            GameManager.Instance.projectileManager.CreateProjectile(sprite, trajectory, where, direction, speed, onHit);
+            GameManager.Instance.projectileManager.CreateProjectile(sprite, trajectory, where, direction, speed, onHit, pierce);
         }
     }
 
@@ -242,6 +243,11 @@ public class Spell
         return baseSpellData.projectile.trajectory;
     }
 
+    private int GetPierce(int spellPower)
+    {
+        return Mathf.Max(0, Mathf.RoundToInt(EvaluateFormula(GetModifierValue("pierce"), spellPower, 0)));
+    }
+
     private Damage.Type GetDamageType()
     {
         if (baseSpellData == null || baseSpellData.damage == null)
@@ -265,6 +271,7 @@ public class Spell
         if (field == "cooldown_multiplier") return modifierSpellData.cooldown_multiplier;
         if (field == "projectile_trajectory") return modifierSpellData.projectile_trajectory;
         if (field == "mana_adder") return modifierSpellData.mana_adder;
+        if (field == "pierce") return modifierSpellData.pierce;
 
         return null;
     }

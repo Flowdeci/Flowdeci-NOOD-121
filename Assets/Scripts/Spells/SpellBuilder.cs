@@ -134,6 +134,7 @@ public class SpellData
     public string angle;
     public string projectile_trajectory;
     public string mana_adder;
+    public string pierce;
 
     public bool IsBaseSpell()
     {

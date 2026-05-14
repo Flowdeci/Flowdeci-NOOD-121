@@ -76,6 +76,26 @@
        "damage_multiplier": "0.75",
        "mana_adder": "10",
        "projectile_trajectory": "homing"
+   },
+   "overcharged": {
+       "name": "overcharged",
+       "description": "Greatly increased damage, with increased mana cost and cooldown.",
+       "damage_multiplier": "2",
+       "mana_multiplier": "2",
+       "cooldown_multiplier": "1.5"
+   },
+   "quickened": {
+       "name": "quickened",
+       "description": "Reduced cooldown, with slightly decreased damage and increased mana cost.",
+       "cooldown_multiplier": "0.5",
+       "damage_multiplier": "0.8",
+       "mana_multiplier": "1.25"
+   },
+   "piercing": {
+       "name": "piercing",
+       "description": "Projectile passes through two enemies before disappearing; increased mana cost.",
+       "pierce": "2",
+       "mana_multiplier": "1.25"
    }
 
 }

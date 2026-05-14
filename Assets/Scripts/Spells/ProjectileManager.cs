@@ -17,19 +17,23 @@ public class ProjectileManager : MonoBehaviour
         
     }
 
-    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable,Vector3> onHit)
+    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable,Vector3> onHit, int pierce = 0)
     {
         GameObject new_projectile = Instantiate(projectiles[which], where + direction.normalized*1.1f, Quaternion.Euler(0,0,Mathf.Atan2(direction.y, direction.x)*Mathf.Rad2Deg));
-        new_projectile.GetComponent<ProjectileController>().movement = MakeMovement(trajectory, speed);
-        new_projectile.GetComponent<ProjectileController>().OnHit += onHit;
+        ProjectileController projectileController = new_projectile.GetComponent<ProjectileController>();
+        projectileController.movement = MakeMovement(trajectory, speed);
+        projectileController.OnHit += onHit;
+        projectileController.pierce = pierce;
     }
 
-    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable, Vector3> onHit, float lifetime)
+    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable, Vector3> onHit, float lifetime, int pierce = 0)
     {
         GameObject new_projectile = Instantiate(projectiles[which], where + direction.normalized * 1.1f, Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg));
-        new_projectile.GetComponent<ProjectileController>().movement = MakeMovement(trajectory, speed);
-        new_projectile.GetComponent<ProjectileController>().OnHit += onHit;
-        new_projectile.GetComponent<ProjectileController>().SetLifetime(lifetime);
+        ProjectileController projectileController = new_projectile.GetComponent<ProjectileController>();
+        projectileController.movement = MakeMovement(trajectory, speed);
+        projectileController.OnHit += onHit;
+        projectileController.pierce = pierce;
+        projectileController.SetLifetime(lifetime);
     }
 
     public ProjectileMovement MakeMovement(string name, float speed)

@@ -5,6 +5,7 @@ using System.Collections;
 public class ProjectileController : MonoBehaviour
 {
     public float lifetime;
+    public int pierce;
     public event Action<Hittable,Vector3> OnHit;
     public ProjectileMovement movement;
     
@@ -24,23 +25,34 @@ public class ProjectileController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("projectile")) return;
+        bool hitUnit = false;
+
         if (collision.gameObject.CompareTag("unit"))
         {
             var ec = collision.gameObject.GetComponent<EnemyController>();
             if (ec != null)
             {
-                OnHit(ec.hp, transform.position);
+                hitUnit = true;
+                OnHit?.Invoke(ec.hp, transform.position);
             }
             else
             {
                 var pc = collision.gameObject.GetComponent<PlayerController>();
                 if (pc != null)
                 {
-                    OnHit(pc.hp, transform.position);
+                    hitUnit = true;
+                    OnHit?.Invoke(pc.hp, transform.position);
                 }
             }
 
         }
+
+        if (hitUnit && pierce > 0)
+        {
+            pierce--;
+            return;
+        }
+
         Destroy(gameObject);
     }
 
